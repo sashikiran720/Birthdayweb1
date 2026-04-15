@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Someone Special | 2026</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;700&family=Playfair+Display:ital,wght@0,900;1,900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #050505;
+            --accent: #ff2d75;
+            --accent-soft: #ff2d7533;
+            --secondary: #7000ff;
+            --text: #ffffff;
+            --text-dim: rgba(255, 255, 255, 0.6);
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+            --font-heading: 'Playfair Display', serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-main);
+            overflow-x: hidden;
+            cursor: none; /* Custom cursor */
+        }
+
+        /* --- Custom Magnetic Cursor --- */
+        #cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.1s ease-out;
+        }
+
+        #cursor-follower {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--accent);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform 0.15s ease-out, width 0.3s, height 0.3s;
+        }
+
+        /* --- Background Aurora --- */
+        .aurora-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            filter: blur(100px);
+            opacity: 0.5;
+        }
+
+        .aurora {
+            position: absolute;
+            width: 60vw;
+            height: 60vw;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+            animation: move 20s infinite alternate;
+        }
+
+        .aurora-2 {
+            right: -10%;
+            bottom: -10%;
+            background: radial-gradient(circle, var(--secondary) 0%, transparent 70%);
+            animation: move 25s infinite alternate-reverse;
+        }
+
+        @keyframes move {
+            from { transform: translate(-10%, -10%); }
+            to { transform: translate(20%, 20%); }
+        }
+
+        /* --- Sections --- */
+        section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 5vw;
+            position: relative;
+        }
+
+        /* --- Act 0: The Lock --- */
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: var(--bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s cubic-bezier(0.76, 0, 0.24, 1);
+        }
+
+        .enter-btn {
+            background: none;
+            border: 1px solid var(--glass-border);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 100px;
+            font-size: 0.9rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: 0.4s;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .enter-btn:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 30px var(--accent-soft);
+        }
+
+        /* --- Act 1: Hero --- */
+        .hero-title {
+            font-family: var(--font-heading);
+            font-size: clamp(3rem, 12vw, 10rem);
+            line-height: 0.9;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .hero-title span {
+            display: block;
+            background: linear-gradient(to right, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* --- Act 2: Bento Grid (The "Why You" Section) --- */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: 250px;
+            gap: 20px;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .bento-item {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            backdrop-filter: blur(10px);
+            transition: 0.5s;
+        }
+
+        .bento-item:hover {
+            border-color: var(--accent);
+            transform: translateY(-10px);
+        }
+
+        .bento-item h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--accent);
+        }
+
+        .bento-item p {
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .large { grid-column: span 2; }
+        .tall { grid-row: span 2; }
+
+        /* --- Act 3: The Virtual Candle --- */
+        .candle-section {
+            text-align: center;
+        }
+
+        .candle-container {
+            width: 100px;
+            height: 200px;
+            position: relative;
+            cursor: pointer;
+            margin-top: 50px;
+        }
+
+        .flame {
+            width: 30px;
+            height: 50px;
+            background: var(--accent);
+            border-radius: 50% 50% 20% 20%;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            filter: blur(5px);
+            animation: flicker 0.1s infinite alternate;
+            box-shadow: 0 0 40px var(--accent);
+        }
+
+        .wick {
+            width: 4px;
+            height: 150px;
+            background: #333;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        @keyframes flicker {
+            0% { transform: translateX(-50%) scale(1); }
+            100% { transform: translateX(-50%) scale(1.1) rotate(2deg); }
+        }
+
+        /* --- Act 4: The Final Letter --- */
+        .letter-container {
+            max-width: 700px;
+            text-align: center;
+            opacity: 0;
+        }
+
+        .letter-container p {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            font-weight: 200;
+        }
+
+        /* --- Utilities --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 768px) {
+            .bento-grid { grid-template-columns: 1fr; }
+            .large { grid-column: span 1; }
+            .hero-title { font-size: 4rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
+
+    <div class="aurora-container">
+        <div class="aurora"></div>
+        <div class="aurora aurora-2"></div>
+    </div>
+
+    <!-- Act 0: The Entrance -->
+    <div id="loader">
+        <button class="enter-btn" onclick="init()">Unlock Experience</button>
+    </div>
+
+    <main id="content" style="display:none;">
+        
+        <!-- Act 1: The Reveal -->
+        <section>
+            <h1 class="hero-title" id="main-title">
+                HAPPY<br><span>BIRTHDAY</span><br><em id="target-name">ALEX</em>
+            </h1>
+        </section>
+
+        <!-- Act 2: The Why -->
+        <section>
+            <div class="bento-grid">
+                <div class="bento-item reveal large">
+                    <h3>The Spark</h3>
+                    <p>It’s not just about the time we’ve known each other; it’s about how every second feels meaningful when you’re around.</p>
+                </div>
+                <div class="bento-item reveal">
+                    <h3>Your Aura</h3>
+                    <p>You have this way of making the world feel quiet and beautiful.</p>
+                </div>
+                <div class="bento-item reveal tall">
+                    <h3>2026 & Beyond</h3>
+                    <p>This year is yours. I can't wait to see every dream of yours turn into reality. You are destined for greatness.</p>
+                </div>
+                <div class="bento-item reveal">
+                    <h3>The Laugh</h3>
+                    <p>Still my favorite sound in the world. Never let it fade.</p>
+                </div>
+                <div class="bento-item reveal large">
+                    <h3>Pure Magic</h3>
+                    <p>Sometimes I wonder how one person can carry so much light. Thank you for being you.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Act 3: The Interaction -->
+        <section class="candle-section">
+            <h2 class="reveal" style="font-family: var(--font-heading); font-size: 3rem;">Make a Wish</h2>
+            <p class="reveal" style="color: var(--text-dim);">Close your eyes, think of something beautiful, and click the flame.</p>
+            
+            <div class="candle-container" onclick="blowCandle(this)">
+                <div class="flame"></div>
+                <div class="wick"></div>
+            </div>
+        </section>
+
+        <!-- Act 4: The Love Letter -->
+        <section>
+            <div class="letter-container reveal" id="final-letter">
+                <p id="personal-message">
+                    "Message goes here..."
+                </p>
+                <h3 style="font-family: var(--font-heading); font-size: 2rem; color: var(--accent);">Yours Always, <span id="sender-name">Name</span></h3>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Confetti Canvas -->
+    <canvas id="canvas" style="position:fixed; top:0; left:0; pointer-events:none; z-index:999;"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        /**
+         * 1. PERSONALIZATION DATA
+         * Change these variables to customize the site
+         */
+        const DATA = {
+            targetName: "SAMANTHA", // Use ALL CAPS for the hero effect
+            senderName: "Julian",
+            message: "Every day with you feels like a gift I didn't know I deserved. On your birthday, I just want you to know how deeply you are loved, how much you inspire me, and how excited I am for everything we're going to build together this year.",
+        };
+
+        // Inject Data
+        document.getElementById('target-name').innerText = DATA.targetName;
+        document.getElementById('sender-name').innerText = DATA.senderName;
+        document.getElementById('personal-message').innerText = DATA.message;
+
+        /**
+         * 2. CORE LOGIC
+         */
+        function init() {
+            // Hide loader
+            document.getElementById('loader').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+                startAnimations();
+            }, 1000);
+        }
+
+        function startAnimations() {
+            // Hero Entry
+            const hero = document.getElementById('main-title');
+            hero.style.transition = "all 1.5s cubic-bezier(0.22, 1, 0.36, 1)";
+            hero.style.opacity = "1";
+            hero.style.transform = "translateY(0)";
+            
+            // Trigger scroll reveals
+            handleScroll();
+        }
+
+        // Custom Cursor Logic
+        const cursor = document.getElementById('cursor');
+        const follower = document.getElementById('cursor-follower');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+            follower.style.transform = `translate3d(${e.clientX - 10}px, ${e.clientY - 10}px, 0)`;
+        });
+
+        // Hover effect for cursor
+        document.querySelectorAll('button, .bento-item, .candle-container').forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                follower.style.width = '80px';
+                follower.style.height = '80px';
+                follower.style.backgroundColor = 'var(--accent-soft)';
+            });
+            link.addEventListener('mouseleave', () => {
+                follower.style.width = '40px';
+                follower.style.height = '40px';
+                follower.style.backgroundColor = 'transparent';
+            });
+        });
+
+        // Scroll Reveal Logic
+        function handleScroll() {
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach(el => {
+                const windowHeight = window.innerHeight;
+                const revealTop = el.getBoundingClientRect().top;
+                if (revealTop < windowHeight - 100) {
+                    el.classList.add('active');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', handleScroll);
+
+        // Candle Blow Interaction
+        function blowCandle(el) {
+            const flame = el.querySelector('.flame');
+            flame.style.transition = "all 0.5s ease";
+            flame.style.opacity = "0";
+            flame.style.transform = "translate(-50%, -20px) scale(0)";
+            
+            // Trigger Confetti
+            const duration = 5 * 1000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+              return Math.random() * (max - min) + min;
+            }
+
+            const interval = setInterval(function() {
+              const timeLeft = animationEnd - Date.now();
+
+              if (timeLeft <= 0) {
+                return clearInterval(interval);
+              }
+
+              const particleCount = 50 * (timeLeft / duration);
+              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+
+            // Reveal Final Letter
+            document.getElementById('final-letter').classList.add('active');
+        }
+    </script>
+</body>
+</html>
